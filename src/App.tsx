@@ -1,5 +1,5 @@
-import YourFeature from './YourFeature'; 
-
+import LifeDonutChart from './components/LifeDonutChart';
+import YourFeature from './components/YourFeature';
 function App() {
   return <YourFeature />;
 }
