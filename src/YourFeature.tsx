@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import LifeProgressBar from './LifeProgressBar'
+import LifeDonutChart from './LifeDonutChart'
 
 function LifePage() {
   const [birth, setBirth] = useState('')
@@ -18,8 +20,8 @@ function LifePage() {
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>인생 퍼센트 계산기</h1>
+    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+      <h1 style={{ textAlign: 'center' }}>인생 퍼센트 계산기</h1>
 
       <div style={{ marginBottom: '1rem' }}>
         <label>생년월일: </label>
@@ -42,8 +44,10 @@ function LifePage() {
       <button onClick={calculate}>계산</button>
 
       {percentage !== null && (
-        <div style={{ marginTop: '1rem' }}>
-          <h2>현재 인생 진행률: {percentage}%</h2>
+        <div style={{ marginTop: '2rem' }}>
+          <h2 style={{ textAlign: 'center' }}>현재 인생 진행률: {percentage}%</h2>
+          <LifeProgressBar percent={percentage} />
+          <LifeDonutChart percent={percentage} />
         </div>
       )}
     </div>
