@@ -27,7 +27,7 @@ const LoginPage = () => {
       localStorage.setItem('token', access_token);
 
       alert('로그인 성공!');
-      navigate('/timeline');
+      navigate('/');
     } catch (err: any) {
       const detail = err.response?.data?.detail;
       const message = Array.isArray(detail)
