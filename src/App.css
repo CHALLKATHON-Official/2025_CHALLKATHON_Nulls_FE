@@ -1,3 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('/alice-bg.png'); /* public 폴더 기준 */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  color: white; /* 텍스트 기본 흰색 */
+  font-family: 'system-ui', sans-serif;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
