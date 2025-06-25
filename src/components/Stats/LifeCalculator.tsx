@@ -32,19 +32,26 @@ const LifeCalculator = () => {
     <Container
       maxWidth="sm"
       sx={{
-        minHeight: '100vh',            
-        display: 'flex',               
-        flexDirection: 'column',       
-        justifyContent: 'center',      
-        alignItems: 'center',          
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h5" align="center" gutterBottom>
           인생 퍼센트 계산기
         </Typography>
 
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 4, width: '100%' }}>
           <TextField
             fullWidth
             label="생년월일"
@@ -75,15 +82,28 @@ const LifeCalculator = () => {
         </Box>
 
         {percentage !== null && (
-          <Card sx={{ mt: 4, backgroundColor: '#fff' }}>
+          <Card sx={{ mt: 4, backgroundColor: '#fff', width: '100%' }}>
             <CardContent>
               <Typography variant="h6" align="center">
                 현재 인생 진행률: {percentage}%
               </Typography>
-              <Box sx={{ my: 2 }}>
+
+              {/* 막대그래프 */}
+              <Box sx={{ my: 3 }}>
                 <LifeProgressBar percent={percentage} />
               </Box>
-              <LifeDonutChart percent={percentage} />
+
+              {/* 도넛그래프 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  mt: 2,
+                }}
+              >
+                <LifeDonutChart percent={percentage} />
+              </Box>
             </CardContent>
           </Card>
         )}
