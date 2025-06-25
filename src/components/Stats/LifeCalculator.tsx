@@ -8,19 +8,41 @@ import {
   Card,
   CardContent,
 } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/userState';
+import { parseISO, format } from 'date-fns';
 import LifeProgressBar from '@/components/Timeline/LifeProgressBar';
 import LifeDonutChart from '@/components/Stats/LifeDonutChart';
+import BirthdayOverlay from '@/components/Effects/BirthdayOverlay';
 
 const LifeCalculator = () => {
-  const [birth, setBirth] = useState('');
+  const user = useRecoilValue(userState);
+  const isLoggedIn = !!user?.birth_date;
+
+  const [manualBirth, setManualBirth] = useState('');
   const [lifeExpectancy, setLifeExpectancy] = useState(85);
   const [percentage, setPercentage] = useState<number | null>(null);
 
-  const calculate = () => {
-    if (!birth) return;
+  const birthDateString = isLoggedIn
+    ? format(parseISO(user.birth_date), 'yyyy-MM-dd')
+    : manualBirth;
 
-    const birthDate = new Date(birth);
-    const today = new Date();
+  const today = new Date();
+  const birthForCompare = isLoggedIn
+    ? parseISO(user.birth_date)
+    : manualBirth
+    ? new Date(manualBirth)
+    : null;
+
+  const isBirthday =
+    birthForCompare &&
+    today.getMonth() === birthForCompare.getMonth() &&
+    today.getDate() === birthForCompare.getDate();
+
+  const calculate = () => {
+    if (!birthDateString) return;
+
+    const birthDate = new Date(birthDateString);
     const ageInMs = today.getTime() - birthDate.getTime();
     const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
 
@@ -37,8 +59,13 @@ const LifeCalculator = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
       }}
     >
+      {isLoggedIn && isBirthday && (
+        <BirthdayOverlay nickname={user?.nickname || '당신'} />
+      )}
+
       <Box
         sx={{
           width: '100%',
@@ -56,9 +83,12 @@ const LifeCalculator = () => {
             fullWidth
             label="생년월일"
             type="date"
-            value={birth}
-            onChange={(e) => setBirth(e.target.value)}
+            value={birthDateString}
+            onChange={(e) => setManualBirth(e.target.value)}
             InputLabelProps={{ shrink: true }}
+            InputProps={{
+              readOnly: isLoggedIn,
+            }}
             sx={{ mb: 3 }}
           />
 
@@ -88,12 +118,10 @@ const LifeCalculator = () => {
                 현재 인생 진행률: {percentage}%
               </Typography>
 
-              {/* 막대그래프 */}
               <Box sx={{ my: 3 }}>
                 <LifeProgressBar percent={percentage} />
               </Box>
 
-              {/* 도넛그래프 */}
               <Box
                 sx={{
                   display: 'flex',

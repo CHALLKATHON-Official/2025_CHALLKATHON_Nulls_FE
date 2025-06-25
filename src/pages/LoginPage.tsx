@@ -36,7 +36,10 @@ const LoginPage = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       });
 
-      console.log('🙋‍♂️ /me 응답:', meRes.data);
+      // ✅ 사용자 전체 응답 확인
+      console.log('🙋‍♂️ /me 응답:', JSON.stringify(meRes.data, null, 2));
+      console.log('🎂 birth_date:', meRes.data.birth_date); // ✅ 생년월일 확인 로그 추가
+
       setUser(meRes.data);
 
       if (!meRes.data.nickname) {
@@ -81,7 +84,6 @@ const LoginPage = () => {
             sx={{ mb: 4 }}
           />
 
-          {/* ✅ type 명시적으로 지정 */}
           <Button type="submit" variant="contained" fullWidth>
             로그인
           </Button>

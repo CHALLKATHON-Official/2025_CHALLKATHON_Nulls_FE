@@ -9,15 +9,16 @@ import {
 } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { Routes, Route } from 'react-router-dom';
-import { RecoilRoot } from 'recoil'; // ✅ 추가
+import { RecoilRoot } from 'recoil';
 
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import MainTimelinePage from './pages/MainTimelinePage';
 import SettingsPage from './pages/SettingsPage';
+import VerifyPasswordPage from './pages/VerifyPasswordPage';
+import EditProfilePage from './pages/EditProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
-
 import bgImage from '@/assets/alice-bg.png';
 
 const App = () => {
@@ -41,7 +42,7 @@ const App = () => {
   }, [darkMode]);
 
   return (
-    <RecoilRoot> {/* ✅ 앱 전체를 전역 상태로 감쌈 */}
+    <RecoilRoot>
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
@@ -75,11 +76,7 @@ const App = () => {
                 },
               }}
             >
-              {darkMode ? (
-                <Brightness4 fontSize="medium" />
-              ) : (
-                <Brightness7 fontSize="medium" />
-              )}
+              {darkMode ? <Brightness4 fontSize="medium" /> : <Brightness7 fontSize="medium" />}
             </IconButton>
           </Tooltip>
         </Box>
@@ -104,6 +101,8 @@ const App = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/timeline" element={<MainTimelinePage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/settings/verify-password" element={<VerifyPasswordPage />} />
+              <Route path="/settings/edit" element={<EditProfilePage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>
