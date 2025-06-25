@@ -1,15 +1,21 @@
-// src/App.tsx
 import { useMemo, useState, useEffect } from 'react';
-import { createTheme, ThemeProvider, CssBaseline, IconButton } from '@mui/material';
+import {
+  createTheme,
+  ThemeProvider,
+  CssBaseline,
+  IconButton,
+  Box,
+  Tooltip,
+} from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { Routes, Route } from 'react-router-dom';
-
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import MainTimelinePage from './pages/MainTimelinePage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
+import bgImage from '@/assets/alice-bg.png';
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -35,35 +41,55 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      {/* 오른쪽 상단 다크모드 토글 버튼 */}
-      <div style={{ position: 'fixed', top: 16, right: 16, zIndex: 9999 }}>
-        <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
-          {darkMode ? <Brightness7 /> : <Brightness4 />}
-        </IconButton>
-      </div>
+      {/* 🌙 다크모드 토글 버튼 (오른쪽 아래 + 가독성 강화) */}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 20,
+          right: 30,
+          zIndex: 9999,
+        }}
+      >
+        <Tooltip title={darkMode ? '라이트 모드로 전환' : '다크 모드로 전환'}>
+          <IconButton
+            onClick={() => setDarkMode(!darkMode)}
+            sx={{
+              backgroundColor: darkMode
+                ? 'rgba(255,255,255,0.08)'
+                : 'rgba(0,0,0,0.06)',
+              color: darkMode ? '#ffffff' : '#1a1a1a',
+              border: darkMode
+                ? '1px solid rgba(255,255,255,0.25)'
+                : '1px solid rgba(0,0,0,0.1)',
+              backdropFilter: 'blur(4px)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: darkMode
+                  ? 'rgba(255,255,255,0.15)'
+                  : 'rgba(0,0,0,0.1)',
+              },
+            }}
+          >
+            {darkMode ? <Brightness4 fontSize="medium" /> : <Brightness7 fontSize="medium" />}
+          </IconButton>
+        </Tooltip>
+      </Box>
 
-      {/* 👇 모든 페이지 공통 배경 및 중앙 정렬 */}
-      <div
-        style={{
+      {/* 🎨 배경이 적용된 전체 앱 컨테이너 */}
+      <Box
+        sx={{
           minHeight: '100vh',
           width: '100vw',
-          backgroundImage: "url('/alice-bg.png')",
+          backgroundImage: `url(${bgImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem',
-            width: '100%',
-          }}
-        >
+        <Box sx={{ flex: 1, width: '100%' }}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -72,8 +98,8 @@ const App = () => {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 };

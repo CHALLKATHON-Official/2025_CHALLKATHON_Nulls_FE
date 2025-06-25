@@ -1,68 +1,58 @@
 import { useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import Header from '@/components/Header/Header';
 import LifeCalculator from '@/components/Stats/LifeCalculator';
 import { keyframes } from '@emotion/react';
+import bgImage from '@/assets/alice-bg.png';
 
 const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
 const LandingPage = () => {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100vw',
-        backgroundImage: "url('/alice-bg.png')",
+    <Box
+      sx={{
+        width: '100%',
+        minHeight: '100dvh', // ✅ 화면 꽉 채우기 (모바일 지원 포함)
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
       <Header />
 
-      <div
-        style={{
+      <Box
+        sx={{
           flex: 1,
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
-          width: '100%',
-          padding: '2rem',
+          justifyContent: 'center',
+          px: 2,
+          py: 6,
         }}
       >
-        <div
-          style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.75)',
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: 500,                        // ✅ 초기 스타일로 복원
+            backgroundColor: 'rgba(248, 250, 252, 0.4)', // 흰색 반투명 배경
             backdropFilter: 'blur(10px)',
             borderRadius: '1.5rem',
-            padding: '3rem',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-            width: '100%',
-            maxWidth: '500px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
+            p: 4,
             textAlign: 'center',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
             animation: `${fadeIn} 1s ease-out`,
           }}
         >
@@ -71,7 +61,7 @@ const LandingPage = () => {
             gutterBottom
             sx={{
               fontWeight: 700,
-              color: '#1e293b',
+              color: 'rgba(2, 3, 15, 0.75)',
               whiteSpace: 'pre-line',
               lineHeight: 1.3,
               animation: `${fadeIn} 1s ease-out`,
@@ -83,19 +73,18 @@ const LandingPage = () => {
           <Typography
             sx={{
               mb: 2,
-              color: '#475569',
+              color: 'rgba(2, 3, 15, 0.75)',
               animation: `${fadeIn} 1.3s ease-out`,
             }}
           >
             당신의 시간을 타임라인으로 기록하고 되돌아보세요.
           </Typography>
 
-          {/* ⏳ 실시간 시계 */}
           <Typography
             sx={{
               mb: 4,
               fontSize: '0.9rem',
-              color: '#6b7280',
+              color: 'rgba(2, 3, 15, 0.75)',
               animation: `${fadeIn} 1.5s ease-out`,
             }}
           >
@@ -109,11 +98,10 @@ const LandingPage = () => {
             })}
           </Typography>
 
-          {/* 🧮 계산기 기능 */}
           <LifeCalculator />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -5,9 +5,10 @@ import {
   Typography,
   Button,
   Box,
+  Link as MuiLink,
 } from '@mui/material';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -65,6 +66,26 @@ const LoginPage = () => {
           로그인
         </Button>
       </Box>
+
+      {/* 👇 회원가입 유도 문구 */}
+      <Typography
+        sx={{
+          mt: 3,
+          fontSize: '0.9rem',
+          textAlign: 'center',
+          color: 'text.secondary',
+        }}
+      >
+        계정이 없으신가요?{' '}
+        <MuiLink
+          component={Link}
+          to="/signup"
+          underline="hover"
+          sx={{ color: 'primary.main', fontWeight: 500 }}
+        >
+          회원가입
+        </MuiLink>
+      </Typography>
     </Container>
   );
 };
