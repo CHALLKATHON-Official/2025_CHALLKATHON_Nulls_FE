@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react'; 
 import { Box, Container, Typography, TextField, Button, Stack } from '@mui/material';
 import Header from '@/components/Header/Header';
 
 const SettingsPage = () => {
-  const [nickname, setNickname] = useState('정혁');
-  const [birth, setBirth] = useState('1999-01-01');
+  const [nickname, setNickname] = useState('');            
+  const [birth, setBirth] = useState('');
   const [lifeExpectancy, setLifeExpectancy] = useState(83);
 
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetch('http://localhost:8000/auth/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setNickname(data.username);    
+        setBirth(data.birth_date);     
+       
+      });
+  }, []);
+
   const handleSave = () => {
-    // TODO: 서버에 업데이트 요청 보내기
+    
     console.log({ nickname, birth, lifeExpectancy });
     alert('설정이 저장되었어요!');
   };
