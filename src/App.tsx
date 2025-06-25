@@ -1,20 +1,23 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import YourFeature from './components/YourFeature';  // 기존 퍼센트 계산기
-import MainEntry from './pages/MainEntry';           // 새롭게 만든 독립 메인 페이지
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
+import LandingPage from './pages/LandingPage';
+import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
+import MainTimelinePage from './pages/MainTimelinePage';
+import SettingsPage from './pages/SettingsPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+const App = () => {
   return (
     <Routes>
-      {/* ✅ 루트로 들어오면 /main으로 자동 이동 */}
-      <Route path="/" element={<Navigate to="/main" replace />} />
-
-      {/* ✅ 독립된 진입용 메인 페이지 */}
-      <Route path="/main" element={<MainEntry />} />
-
-      {/* ✅ 기존 퍼센트 계산기 페이지 */}
-      <Route path="/life-clock" element={<YourFeature />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/login" element={<LoginPage />} /> {/* ✅ 로그인 경로 정확히 설정 */}
+      <Route path="/timeline" element={<MainTimelinePage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
-}
+};
 
-export default App;
+export default App; 
