@@ -4,13 +4,21 @@ interface LifeProgressBarProps {
   percent: number;
 }
 
+const getProgressColor = (percent: number): string => {
+  if (percent < 20) return '#4caf50'; // 초록
+  if (percent < 40) return '#2196f3'; // 파랑
+  if (percent < 60) return '#ff9800'; // 주황
+  if (percent < 80) return '#f44336'; // 빨강
+  return '#212121'; // 검정
+};
+
 const LifeProgressBar = ({ percent }: LifeProgressBarProps) => {
-  const color = percent > 75 ? '#e53935' : '#1976d2'; // 75% 넘어가면 경고색
+  const color = getProgressColor(percent);
 
   return (
     <Box>
       <Typography align="center" variant="subtitle1" gutterBottom>
-        현재까지 {percent}% 인생을 살았어요
+        현재까지 {percent.toFixed(1)}% 인생을 살았어요
       </Typography>
       <LinearProgress
         variant="determinate"
