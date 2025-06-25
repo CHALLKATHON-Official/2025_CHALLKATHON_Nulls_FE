@@ -9,27 +9,45 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../userState';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const setUser = useSetRecoilState(userState);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('✅ handleLogin 실행됨');
 
     try {
-      const res = await axios.post('http://localhost:8000/auth/login', {
+      const res = await axios.post('http://localhost:8000/login', {
         username,
         password,
       });
 
       const { access_token } = res.data;
+      console.log('🔐 access_token:', access_token);
       localStorage.setItem('token', access_token);
 
-      alert('로그인 성공!');
+      const meRes = await axios.get('http://localhost:8000/me', {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+
+      console.log('🙋‍♂️ /me 응답:', meRes.data);
+      setUser(meRes.data);
+
+      if (!meRes.data.nickname) {
+        alert('⚠️ 사용자 정보에 nickname이 없습니다.');
+        return;
+      }
+
+      alert(`${meRes.data.nickname}님, 환영합니다!`);
       navigate('/');
     } catch (err: any) {
+      console.error('❌ 로그인 중 에러:', err);
       const detail = err.response?.data?.detail;
       const message = Array.isArray(detail)
         ? detail.map((e: any) => e.msg).join(', ')
@@ -44,30 +62,32 @@ const LoginPage = () => {
         로그인
       </Typography>
 
-      <Box component="form" onSubmit={handleLogin}>
-        <TextField
-          fullWidth
-          label="아이디"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          sx={{ mb: 3 }}
-        />
+      <Box>
+        <form onSubmit={handleLogin}>
+          <TextField
+            fullWidth
+            label="아이디"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{ mb: 3 }}
+          />
 
-        <TextField
-          fullWidth
-          label="비밀번호"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 4 }}
-        />
+          <TextField
+            fullWidth
+            label="비밀번호"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ mb: 4 }}
+          />
 
-        <Button type="submit" variant="contained" fullWidth>
-          로그인
-        </Button>
+          {/* ✅ type 명시적으로 지정 */}
+          <Button type="submit" variant="contained" fullWidth>
+            로그인
+          </Button>
+        </form>
       </Box>
 
-      {/* 👇 회원가입 유도 문구 */}
       <Typography
         sx={{
           mt: 3,

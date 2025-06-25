@@ -8,14 +8,19 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { userState } from '../../userState'; // ✅ 상대 경로 확인해줘
 
 const Header = () => {
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('token'); // 로그인 상태 판단
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  const user = useRecoilValue(userState); // ✅ 닉네임 불러오기
+  const resetUser = useResetRecoilState(userState); // ✅ 로그아웃 시 초기화용
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    // TODO: 사용자 상태 초기화
+    resetUser(); // ✅ 전역 상태 초기화
     navigate('/login');
   };
 
@@ -32,9 +37,15 @@ const Header = () => {
         </Typography>
 
         {/* 우측 버튼들 */}
-        <Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {isLoggedIn ? (
             <>
+              {/* ✅ 닉네임 출력 */}
+              {user.nickname && (
+                <Typography sx={{ mr: 2, fontWeight: 600 }}>
+                  {user.nickname}님
+                </Typography>
+              )}
               <IconButton onClick={() => navigate('/settings')} color="inherit">
                 <SettingsIcon />
               </IconButton>
