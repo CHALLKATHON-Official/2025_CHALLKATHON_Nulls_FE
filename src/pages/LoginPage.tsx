@@ -23,7 +23,7 @@ const LoginPage = () => {
     console.log('✅ handleLogin 실행됨');
 
     try {
-      const res = await axios.post('http://localhost:8000/login', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         username,
         password,
       });
@@ -32,7 +32,7 @@ const LoginPage = () => {
       console.log('🔐 access_token:', access_token);
       localStorage.setItem('token', access_token);
 
-      const meRes = await axios.get('http://localhost:8000/me', {
+      const meRes = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${access_token}` },
       });
 
