@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
 import { Box, Typography, useTheme } from '@mui/material';
